@@ -1,6 +1,6 @@
 # Grim Fetcher
 
-[Link to the download page (Itch.io)](https://lycorisdev.itch.io/grim-fetcher)  
+[Link to the download page (Itch.io)](https://lycorisbellua.itch.io/grim-fetcher)  
 
 ![](./screenshot.png)
 
@@ -17,7 +17,7 @@ concept, but I don't currently have time for this project. I don't even have
 time for a refactoring, and gods know it's needed. It has been tempting to 
 scrap the whole thing and start over. That being said, I'm still proud of what 
 I've made, and I can appreciate my progress from then to 
-[Olafur](https://github.com/LycorisDev/c_game_olafur).  
+[Olafur](https://github.com/LycorisBellua/c_game_olafur).  
 
 ## Features
 
