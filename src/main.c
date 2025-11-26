@@ -19,6 +19,7 @@ int main(void)
 	while (!glfwWindowShouldClose(man.window))
 	{
 		update_time_variables();
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		clear_drawing(man.frame[man.curr_frame], 255);
 		render();
