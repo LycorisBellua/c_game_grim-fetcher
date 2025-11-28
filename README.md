@@ -33,10 +33,10 @@ I've made, and I can appreciate my progress from then to
 
 The main character is a little dog whom people around me kept calling a cat, so 
 now it's his name: Sua. It indeed means "cat" in Sumerian. Why Sumerian though, 
-is he that old? Only gods know. What I know though is that I'm quite fond of 
-the word, as this was the first one I've learned in this language (not that I 
-know Sumerian, don't @ me). In any case, Sua is a very good boy, with an 
-important job. A dungeon keeps the souls of fallen adventurers, preventing them 
-from joining the afterlife, and the dungeon is too dangerous for clerics to 
-come resurrect them. This is when Sua dives in: he comes down into the dungeon 
-to fetch as many souls he can before going back to the surface to release them.  
+is he that old? Only gods know. What I know is that I'm quite fond of the word, 
+as this was the first one I've learned in this language (not that I know 
+Sumerian, don't @ me). In any case, Sua is a very good boy, with an important 
+job. A dungeon keeps the souls of fallen adventurers, preventing them from 
+joining the afterlife, and the dungeon is too dangerous for clerics to come 
+resurrect them. This is when Sua dives in: he comes down into the dungeon to 
+fetch as many souls he can before going back to the surface to release them.  
