@@ -28,6 +28,8 @@
 #define ID_SOUL_GUI "soul_gui"
 
 #define E_FAIL_MEM "Memory cannot be allocated"
+#define E_FAIL_SHADER "The vertex and/or fragment shaders cannot be compiled"
+#define E_FAIL_SHADER_PROG "The shader program cannot be linked"
 #define E_FAIL_JSON "The JSON file for images cannot be loaded"
 #define E_NO_IMG "Image not found"
 #define E_IMG_NO_PATH "An image object of the JSON file has no \"path\""

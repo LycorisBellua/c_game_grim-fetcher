@@ -1,7 +1,8 @@
 #include "grim_fetcher.h"
 
 static GLuint compile_shader(GLenum type, const char *text);
-static void   free_shader(GLuint *id);
+static GLuint link_program(GLuint vertex_shader, GLuint fragment_shader);
+static int    check_status(GLuint id, int is_program);
 
 const char	*g_vertex_shader =
 "#version 400 core\n"
@@ -25,34 +26,26 @@ const char	*g_fragment_shader =
 "	frag_color = vec4(colors, 1.0);\n"
 "}\n";
 
+/*
+	The shaders are freed at the end, whether linking succeeded or not. Once
+	linked, they live in the shader program, so they're no longer needed
+	unless you want to use them in another shader program.
+*/
 int create_shader_program(void)
 {
 	GLuint vs;
 	GLuint fs;
-	int    shader_program;
+	GLuint shader_program;
 
 	vs = compile_shader(GL_VERTEX_SHADER, g_vertex_shader);
 	fs = compile_shader(GL_FRAGMENT_SHADER, g_fragment_shader);
-	if (!vs || !fs)
-	{
-		free_shader(&vs);
-		free_shader(&fs);
-		return 0;
-	}
-	shader_program = glCreateProgram();
-	if (!shader_program)
-	{
-		fprintf(stderr, "Error: Couldn't compile shader program\n");
-		free_shader(&vs);
-		free_shader(&fs);
-		return 0;
-	}
-	glAttachShader(shader_program, vs);
-	glAttachShader(shader_program, fs);
-	glLinkProgram(shader_program);
-	glUseProgram(shader_program);
-	free_shader(&vs);
-	free_shader(&fs);
+	shader_program = 0;
+	if (vs && fs)
+		shader_program = link_program(vs, fs);
+	glDeleteShader(vs);
+	glDeleteShader(fs);
+	if (shader_program)
+		glUseProgram(shader_program);
 	return shader_program;
 }
 
@@ -74,14 +67,54 @@ static GLuint compile_shader(GLenum type, const char *text)
 	if ((type != GL_VERTEX_SHADER && type != GL_FRAGMENT_SHADER) || !text)
 		return 0;
 	id_shader = glCreateShader(type);
+	if (!id_shader)
+		return put_error(E_FAIL_SHADER, 0, 0);
 	glShaderSource(id_shader, 1, (const GLchar **)&text, 0);
 	glCompileShader(id_shader);
+	if (!check_status(id_shader, 0))
+	{
+		glDeleteShader(id_shader);
+		return 0;
+	}
 	return id_shader;
 }
 
-static void free_shader(GLuint *id)
+static GLuint link_program(GLuint vertex_shader, GLuint fragment_shader)
 {
-	glDeleteShader(*id);
-	*id = 0;
-	return;
+	GLuint program;
+
+	program = glCreateProgram();
+	if (!program)
+		return put_error(E_FAIL_SHADER_PROG, 0, 0);
+	glAttachShader(program, vertex_shader);
+	glAttachShader(program, fragment_shader);
+	glLinkProgram(program);
+	if (!check_status(program, 1))
+	{
+		glDeleteProgram(program);
+		return 0;
+	}
+	return program;
+}
+
+/* On failure, the driver's log is printed, since it says what went wrong. */
+static int check_status(GLuint id, int is_program)
+{
+	GLint status;
+	char  log[1024];
+
+	if (is_program)
+		glGetProgramiv(id, GL_LINK_STATUS, &status);
+	else
+		glGetShaderiv(id, GL_COMPILE_STATUS, &status);
+	if (status)
+		return 1;
+	log[0] = 0;
+	if (is_program)
+		glGetProgramInfoLog(id, sizeof(log), 0, log);
+	else
+		glGetShaderInfoLog(id, sizeof(log), 0, log);
+	if (is_program)
+		return put_error(E_FAIL_SHADER_PROG, log, 0);
+	return put_error(E_FAIL_SHADER, log, 0);
 }
