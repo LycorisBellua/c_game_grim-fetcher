@@ -96,9 +96,13 @@ static void update_time_variables(void)
 	return;
 }
 
+/*
+	GL objects can only be freed while their context exists, so
+	glfwTerminate() comes last. If the window or the GL functions fail,
+	get_window() exits before this can run.
+*/
 static void deinit(void)
 {
-	glfwTerminate();
 	free_shader_program();
 	free_uniform();
 	free_mesh();
@@ -106,6 +110,8 @@ static void deinit(void)
 	deinit_images();
 	free_map_filenames();
 	game_deinit();
+	glfwTerminate();
+	man.window = 0;
 	return;
 }
 
