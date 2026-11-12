@@ -14,13 +14,11 @@ GLFWwindow *get_window(char *title)
 		fprintf(stderr, "Error: The GLFW library failed to initialize\n");
 		exit(EXIT_FAILURE);
 	}
-	set_res();
-	#ifdef __APPLE__
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	#endif
+	set_res();
 	window = glfwCreateWindow(man.res.window_size.x, man.res.window_size.y,
 			title, 0, 0);
 	if (!window)

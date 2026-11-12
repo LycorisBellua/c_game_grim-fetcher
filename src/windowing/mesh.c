@@ -39,7 +39,7 @@ int create_mesh(void)
 	i = 0;
 	while (i < attr_nbr)
 	{
-		glEnableVertexArrayAttrib(VAO, i);
+		glEnableVertexAttribArray(i);
 		glVertexAttribPointer(i, attr_nbr, GL_DOUBLE, GL_FALSE, 
 				attr_nbr * attr_len * sizeof(GLdouble), 
 				(void *)(attr_len * i * sizeof(GLdouble)));
