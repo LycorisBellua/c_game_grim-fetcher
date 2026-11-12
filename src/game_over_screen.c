@@ -6,18 +6,16 @@ static void render_reload_msg(t_frame *frame);
 
 int game_over_screen(void)
 {
-	long    dt;
 	t_frame *frame;
 
 	if (man.state != VICTORY && man.state != FAILURE)
 		return 0;
-	dt = get_delta_time();
 	frame = man.frame[man.curr_frame];
 	render_background(frame);
 	render_victory_emote(frame);
 	render_victory_msg(frame);
 	render_reload_msg(frame);
-	render_gui(frame, dt);
+	render_gui(frame);
 	return 1;
 }
 

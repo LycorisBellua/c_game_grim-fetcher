@@ -6,7 +6,7 @@ static void    move_slime(t_cell *cell, t_ivec2 move);
 void move_symbol(t_map *map, t_ivec2 start, t_ivec2 end)
 {
 	char  symbol;
-	t_spr *spr;
+	t_img *spr;
 
 	symbol = map->cells[start.y * map->size.x + start.x].symbol;
 	spr = map->cells[start.y * map->size.x + start.x].spr;

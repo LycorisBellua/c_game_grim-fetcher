@@ -19,6 +19,7 @@ int main(void)
 	while (!glfwWindowShouldClose(man.window))
 	{
 		update_time_variables();
+		advance_all_image_cycles(&man);
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		clear_drawing(man.frame[man.curr_frame], 255);
@@ -57,9 +58,9 @@ static int init(void)
 	set_map_filenames();
 	if (!man.map_filenames)
 		return 0;
-	if (!game_init(man.map_filenames[man.map_index]))
+	if (!init_images())
 		return 0;
-	if (!set_sprite_array("assets/img/index.json"))
+	if (!game_init(man.map_filenames[man.map_index]))
 		return 0;
 	use_frame(man.frame[man.curr_frame]);
 	glfwSetKeyCallback(man.window, physical_key_callback);
@@ -87,6 +88,7 @@ static void update_time_variables(void)
 	static double last_time;
 	double current_time;
 
+	man.dt_ms = get_delta_time();
 	current_time = glfwGetTime();
 	man.delta_time = current_time - last_time;
 	last_time = current_time;
@@ -101,7 +103,7 @@ static void deinit(void)
 	free_uniform();
 	free_mesh();
 	free_frames();
-	free_sprites();
+	deinit_images();
 	free_map_filenames();
 	game_deinit();
 	return;

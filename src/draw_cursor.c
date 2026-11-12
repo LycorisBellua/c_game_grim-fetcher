@@ -1,6 +1,6 @@
 #include "grim_fetcher.h"
 
-void draw_cursor(t_frame *frame, t_spr *sprite, t_ivec2 p, int cyc)
+void draw_cursor(t_frame *frame, t_img *sprite, t_ivec2 p, int cyc)
 {
 	size_t  i;
 	size_t  len;

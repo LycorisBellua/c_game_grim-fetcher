@@ -35,16 +35,16 @@ static void orient_player(t_cell *player, int x, int y)
 {
 	if ((x > 0 && !strcmp(player->spr->id, "dog_idle_down_left"))
 			|| (y > 0 && !strcmp(player->spr->id, "dog_idle_up_right")))
-		player->spr = &man.sprites[13];
+		player->spr = get_image(&man, "dog_idle_down_right");
 	else if ((x < 0 && !strcmp(player->spr->id, "dog_idle_down_right"))
 			|| (y > 0 && !strcmp(player->spr->id, "dog_idle_up_left")))
-		player->spr = &man.sprites[14];
+		player->spr = get_image(&man, "dog_idle_down_left");
 	else if ((y < 0 && !strcmp(player->spr->id, "dog_idle_down_right"))
 			|| (x > 0 && !strcmp(player->spr->id, "dog_idle_up_left")))
-		player->spr = &man.sprites[15];
+		player->spr = get_image(&man, "dog_idle_up_right");
 	else if ((y < 0 && !strcmp(player->spr->id, "dog_idle_down_left"))
 			|| (x < 0 && !strcmp(player->spr->id, "dog_idle_up_right")))
-		player->spr = &man.sprites[16];
+		player->spr = get_image(&man, "dog_idle_up_left");
 	return;
 }
 

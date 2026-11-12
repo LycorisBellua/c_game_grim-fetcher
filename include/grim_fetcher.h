@@ -15,7 +15,30 @@
 #include "lib/glfw3.h"
 #include "lib/lodepng.h"
 
-#define SPRITE_LEN 64
+#define IMG_JSON_DEFAULT "assets/img/index.json"
+#define ID_BACKGROUND "background"
+#define ID_CURSOR "cursor"
+#define ID_FONT "font_default"
+#define ID_GROUND "ground"
+#define ID_RED_GROUND "red_ground"
+#define ID_WALL_HOR_ONE "wall_hor_one"
+#define ID_WALL_HOR_THREE "wall_hor_three"
+#define ID_WALL_HOR_ONE_CLIFF "wall_hor_one_cliff"
+#define ID_WALL_VER_TWO "wall_ver_two"
+#define ID_SOUL_GUI "soul_gui"
+
+#define E_FAIL_MEM "Memory cannot be allocated"
+#define E_FAIL_JSON "The JSON file for images cannot be loaded"
+#define E_NO_IMG "Image not found"
+#define E_IMG_NO_PATH "An image object of the JSON file has no \"path\""
+#define E_IMG_NO_SEG "An image object of the JSON file has no segment"
+#define E_IMG_NO_ID "An image segment has no \"id\""
+#define E_IMG_BAD_SIZE "An image segment has no \"size\", or a size of 0"
+#define E_IMG_NO_CYCLE "An image segment has no frame in its \"cycle\""
+#define E_IMG_BAD_STILL "The \"still_frame\" of an image segment is outside of " \
+	"its cycle"
+#define E_IMG_OUT_OF_BOUNDS "An image segment reaches outside of its PNG file"
+#define E_IMG_SHADOW_SIZE "The shadow PNG doesn't have the size of its image"
 
 typedef unsigned char t_ubyte;
 typedef unsigned int t_uint;
@@ -65,19 +88,20 @@ typedef struct s_list
 	struct s_list *next;
 } t_list;
 
-typedef struct s_spr
+/* Unlike Olafur, cycles are stored row-major, since nothing is raycasted. */
+typedef struct s_img
 {
-	char    *id;
-	t_ivec2 size;
-	t_ivec2 shadow_offset;
-	int     still_frame;
-	int     cycle_len;
-	int     cycle_index;
-	long    elapsed_time_in_ms;
-	long    cycle_time_in_ms;
-	t_color **cycle;
-	t_color **cycle_shadow;
-} t_spr;
+	char	*id;
+	t_ivec2	size;
+	t_ivec2	shadow_offset;
+	int		still_frame;
+	size_t	cycle_len;
+	size_t	cycle_index;
+	long	elapsed_time_in_ms;
+	long	cycle_time_in_ms;
+	t_color	**cycle;
+	t_color	**cycle_shadow;
+}	t_img;
 
 typedef struct s_player
 {
@@ -94,7 +118,7 @@ typedef struct s_cell t_cell;
 struct s_cell
 {
 	char    symbol;
-	t_spr   *spr;
+	t_img   *spr;
 	int     is_obstacle;
 	int     is_visited;
 	t_ivec2 pos;
@@ -110,33 +134,27 @@ typedef struct s_map
 	t_cell  *cells;
 } t_map;
 
-typedef struct s_img_seg
+typedef struct s_png_seg
 {
-	char    *id;
-	t_ivec2 size;
-	t_ivec2 shadow_offset;
-	int     still_frame;
-	int     cycle_len;
-	long    cycle_time_in_ms;
-	t_ivec2 *cycle;
-} t_img_seg;
-
-typedef struct s_img
-{
-	char      *path;
-	char      *path_shadow;
-	t_ivec2   size;
-	t_color   *data;
-	t_color   *data_shadow;
-	int       segment_len;
-	t_img_seg *seg;
-} t_img;
+	char	*id;
+	t_ivec2	size;
+	t_ivec2	shadow_offset;
+	int		still_frame;
+	long	cycle_time_in_ms;
+	size_t	cycle_len;
+	t_ivec2	*cycle;
+}	t_png_seg;
 
 typedef struct s_png
 {
-	t_ivec2  size;
-	t_ubyte  *buf;
-} t_png;
+	char		*path;
+	char		*path_shadow;
+	t_ivec2		size;
+	t_color		*buf;
+	t_color		*buf_shadow;
+	size_t		segment_len;
+	t_png_seg	*seg;
+}	t_png;
 
 typedef struct s_frame
 {
@@ -178,7 +196,19 @@ typedef struct s_man
 	t_ivec2    click_pos;
 	int        zoom;
 	enum state state;
-	t_spr      sprites[SPRITE_LEN];
+	long       dt_ms;
+	char       **json_paths;
+	t_img      **images;
+	t_img      *img_background;
+	t_img      *img_cursor;
+	t_img      *img_font;
+	t_img      *img_ground;
+	t_img      *img_red_ground;
+	t_img      *img_wall_hor_one;
+	t_img      *img_wall_hor_three;
+	t_img      *img_wall_hor_one_cliff;
+	t_img      *img_wall_ver_two;
+	t_img      *img_soul_gui;
 	t_map      map;
 	t_list     *clicked_path;
 } t_man;
@@ -188,26 +218,20 @@ extern t_man man;
 /* Init --------------------------------------------------------------------- */
 
 int			reload_game(void);
-int			set_sprite_array(char *path);
+int			init_images(void);
+void		deinit_images(void);
 void		set_map_filenames(void);
 void		free_map_filenames(void);
 int			set_map_and_player(char *path);
-void		add_outline_to_font(t_spr *font);
 char		*read_file(char* filepath);
 int			get_map_fd(char *path);
 char		**copy_map(int *fd, char *path);
 char		**get_map_data(char *path);
 void		free_map_data(char **map);
-t_spr		*get_spr_by_symbol(char symbol);
 int			are_collectibles_and_exit_accessible(void);
-t_png		*load_image_from_file(char* png_path);
-void		free_image(t_png* img);
 int			create_background(void);
-int			set_img_file_obj(t_img *file, int fd);
-int			create_sprites_from_file(t_img *file, int *i_spr);
-void		add_red_version_of_ground(void);
+int			add_red_version_of_ground(void);
 int			is_cell_a_slime_neighbor(t_ivec2 i);
-void		free_sprites(void);
 int			create_mesh(void);
 void		render_mesh(void);
 void		free_mesh(void);
@@ -244,16 +268,44 @@ void		render(void);
 long		get_delta_time(void);
 long		get_time(void);
 int			game_over_screen(void);
-t_spr		*get_sprite(char *id);
-t_spr		*get_spr_by_symbol(char symbol);
+t_img		*get_spr_by_symbol(char symbol);
 void		render_background(t_frame *frame);
 void		draw_walls(t_frame *frame, t_ivec2 pos, t_ivec2 i);
 void		copy_frame(t_frame *dst, t_frame *src, int zoom_factor);
-void		render_gui(t_frame *frame, long dt);
+void		render_gui(t_frame *frame);
 void		draw_point(t_frame *f, t_color c, int x, int y);
-void		draw_sprite(t_frame *frame, t_spr *sprite, t_ivec2 pos, long dt_ms);
-void		draw_cursor(t_frame *frame, t_spr *sprite, t_ivec2 p, int cyc);
+void		draw_sprite(t_frame *frame, t_img *sprite, t_ivec2 pos);
+void		draw_cursor(t_frame *frame, t_img *sprite, t_ivec2 p, int cyc);
 void		draw_font_default(t_frame *frame, t_ivec2 *pos, char *str);
+
+/* Images ----------------------------------------------------------------- */
+
+t_png		*load_png_from_path(const char *path);
+void		free_png(t_png *png);
+char		**get_json_content(t_man *man, const char *filepath);
+void		free_json_content(char **content);
+int			is_field(char *line, const char *field);
+char		*get_string_value(char *line);
+int			get_int_value(char *line);
+t_ivec2		get_ivec2_value(char *line);
+int			set_png_file_obj(t_png *file, char **lines, size_t *i);
+void		free_and_reset_png_file_obj(t_png *file);
+void		free_segments(t_png *file);
+void		set_string_value(char **dst, char *line);
+void		parse_segments(t_png *file, char **lines, size_t *i);
+int			update_image_array(t_man *man, const char *path);
+int			register_json_path(t_man *man, const char *path);
+void		discard_new_images(t_man *man, size_t start, const char *path);
+int			check_png_segments(t_png *file);
+int			create_images_from_file(t_man *man, t_png *file, size_t *i_img);
+void		cut_image(t_png *file, t_img *img, size_t i);
+t_img		*create_empty_image(const char *id, t_ivec2 size, t_ubyte alpha);
+t_img		*duplicate_image(const char *dst_id, t_img *src);
+t_img		*get_image(t_man *man, const char *id);
+void		advance_all_image_cycles(t_man *man);
+void		add_outline_to_font(t_img *font);
+void		free_images(t_man *man);
+void		free_image(t_img *img, void (free_fct)(void *));
 
 /* Game --------------------------------------------------------------------- */
 
@@ -279,6 +331,11 @@ void		set_ivec2(t_ivec2 *vector, int x, int y);
 /* Utils -------------------------------------------------------------------- */
 
 char		*gnl(int fd);
+int			put_error(const char *msg, const char *arg, int errnum);
+void		free_arr(void **arr, void (free_fct)(void *));
+size_t		count_arr_elems(void **arr);
+char		*get_absolute_path(const char *path);
+const char	*get_filename(const char *path);
 char		*itoa_dec(int number);
 t_list		*list_new(void *content);
 void		list_add_front(t_list **list, t_list *new);

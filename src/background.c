@@ -5,29 +5,14 @@ static void set_color(t_color *buf, int i, float rng, t_color color);
 
 int create_background(void)
 {
-	t_spr *s;
-	int   i;
+	t_ivec2 size;
 
-	s = &man.sprites[0];
-	memset(s, 0, sizeof(t_spr));
-	s->id = strdup("background");
-	if (!s->id)
-		return 0;
-	s->size.x = man.res.window_size_default.x;
-	s->size.y = man.res.window_size_default.y;
-	s->cycle_len = 1;
-	s->cycle = malloc(s->cycle_len * sizeof(int *));
-	if (!s->cycle)
-		return 0;
-	memset(s->cycle, 0, s->cycle_len * sizeof(int *));
-	s->cycle[0] = malloc(s->size.x * s->size.y * sizeof(int));
-	if (!s->cycle[0])
-		return 0;
-	memset(s->cycle[0], 0, s->size.x * s->size.y * sizeof(int));
-	i = 0;
-	while (i < s->size.x * s->size.y)
-		s->cycle[0][i++].a = 255;
-	draw_background(s->cycle[0], s->size.x, s->size.y, 4);
+	set_ivec2(&size, man.res.window_size_default.x,
+			man.res.window_size_default.y);
+	man.img_background = create_empty_image(ID_BACKGROUND, size, 255);
+	if (!man.img_background)
+		return put_error(E_FAIL_MEM, 0, 0);
+	draw_background(man.img_background->cycle[0], size.x, size.y, 4);
 	return 1;
 }
 
@@ -36,7 +21,7 @@ void render_background(t_frame *frame)
 	t_ivec2 pos;
 
 	set_ivec2(&pos, 0, 0);
-	draw_sprite(frame, &man.sprites[0], pos, 0);
+	draw_sprite(frame, man.img_background, pos);
 	return;
 }
 

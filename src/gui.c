@@ -1,14 +1,14 @@
 #include "grim_fetcher.h"
 
 static void render_steps(t_frame *frame);
-static void render_souls(t_frame *frame, long dt);
+static void render_souls(t_frame *frame);
 
-void render_gui(t_frame *frame, long dt)
+void render_gui(t_frame *frame)
 {
 	render_steps(frame);
-	render_souls(frame, dt);
+	render_souls(frame);
 	if (man.cursor.x >= 0 && man.cursor.y >= 0)
-		draw_cursor(frame, &man.sprites[1], man.cursor, man.click);
+		draw_cursor(frame, man.img_cursor, man.cursor, man.click);
 	return;
 }
 
@@ -57,13 +57,13 @@ static void render_steps(t_frame *frame)
 	return;
 }
 
-static void render_souls(t_frame *frame, long dt)
+static void render_souls(t_frame *frame)
 {
 	t_ivec2 pos;
 	char    *text;
 
 	set_ivec2(&pos, 560, -4);
-	draw_sprite(frame, &man.sprites[12], pos, dt);
+	draw_sprite(frame, man.img_soul_gui, pos);
 	set_ivec2(&pos, 594, 0);
 	text = itoa_dec(man.player.collected);
 	draw_font_default(frame, &pos, text);

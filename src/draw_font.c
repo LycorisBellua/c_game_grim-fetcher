@@ -7,8 +7,8 @@
 #define MOD_Y  4
 
 static void fix_initial_pos(t_ivec2 *pos);
-static int  get_index(char c, int cycle_len);
-static void draw_char(t_frame *frame, t_spr *sprite, t_ivec2 pos);
+static int  get_index(char c, size_t cycle_len);
+static void draw_char(t_frame *frame, t_img *sprite, t_ivec2 pos);
 static void alignment_left(char *str, int *i, t_ivec2 *pos);
 
 /*
@@ -19,13 +19,13 @@ void draw_font_default(t_frame *frame, t_ivec2 *pos, char *str)
 {
 	int   i;
 	int   len;
-	t_spr *s;
+	t_img *s;
 
 	if (!str)
 		return;
 	i = 0;
 	len = strlen(str);
-	s = &man.sprites[2];
+	s = man.img_font;
 	fix_initial_pos(pos);
 	while (i <= len)
 	{
@@ -57,17 +57,17 @@ static void fix_initial_pos(t_ivec2 *pos)
 	return;
 }
 
-static int get_index(char c, int cycle_len)
+static int get_index(char c, size_t cycle_len)
 {
 	int index;
 
 	index = c - ' ';
-	if (index < 0 || index >= cycle_len)
+	if (index < 0 || (size_t)index >= cycle_len)
 		return 0;
 	return index;
 }
 
-static void draw_char(t_frame *frame, t_spr *sprite, t_ivec2 pos)
+static void draw_char(t_frame *frame, t_img *sprite, t_ivec2 pos)
 {
 	int     i;
 	int     len;

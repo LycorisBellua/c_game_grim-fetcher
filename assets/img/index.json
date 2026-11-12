@@ -2,7 +2,6 @@
     {
         "path": "assets/img/mg_cursor.png",
         "path_shadow": "",
-        "segment_len": 1,
         "segments": [
             {
                 "id": "cursor",
@@ -10,7 +9,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 150,
-                "cycle_len": 2,
                 "cycle": [
                     [0, 0],
                     [7, 0]
@@ -21,7 +19,6 @@
     {
         "path": "assets/img/monogram.png",
         "path_shadow": "",
-        "segment_len": 1,
         "segments": [
             {
                 "id": "font_default",
@@ -29,7 +26,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 1000,
-                "cycle_len": 96,
                 "cycle": [
                     [0, 0],
                     [7, 0],
@@ -134,7 +130,6 @@
     {
         "path": "assets/img/md_tileset.png",
         "path_shadow": "",
-        "segment_len": 7,
         "segments": [
             {
                 "id": "wall_hor_one",
@@ -142,7 +137,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
-                "cycle_len": 1,
                 "cycle": [
                     [0, 0]
                 ]
@@ -153,7 +147,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
-                "cycle_len": 1,
                 "cycle": [
                     [9, 0]
                 ]
@@ -164,7 +157,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
-                "cycle_len": 1,
                 "cycle": [
                     [34, 0]
                 ]
@@ -175,7 +167,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
-                "cycle_len": 1,
                 "cycle": [
                     [0, 17]
                 ]
@@ -186,7 +177,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
-                "cycle_len": 1,
                 "cycle": [
                     [9, 17]
                 ]
@@ -197,7 +187,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
-                "cycle_len": 1,
                 "cycle": [
                     [9, 33]
                 ]
@@ -208,7 +197,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 0,
-                "cycle_len": 1,
                 "cycle": [
                     [34, 17]
                 ]
@@ -218,7 +206,6 @@
     {
         "path": "assets/img/mc_soul.png",
         "path_shadow": "assets/img/mc_soul_shadow.png",
-        "segment_len": 3,
         "segments": [
             {
                 "id": "soul_idle",
@@ -226,7 +213,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 3,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 0],
                     [32, 0],
@@ -240,7 +226,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 9,
                 "cycle_time_in_ms": 200,
-                "cycle_len": 12,
                 "cycle": [
                     [0, 32],
                     [32, 32],
@@ -262,7 +247,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 3,
                 "cycle_time_in_ms": 150,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 64],
                     [32, 64],
@@ -275,7 +259,6 @@
     {
         "path": "assets/img/mc_dog.png",
         "path_shadow": "assets/img/mc_dog_shadow.png",
-        "segment_len": 21,
         "segments": [
             {
                 "id": "dog_idle_down_right",
@@ -283,7 +266,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 200,
-                "cycle_len": 12,
                 "cycle": [
                     [0, 0],
                     [32, 0],
@@ -305,7 +287,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 200,
-                "cycle_len": 12,
                 "cycle": [
                     [0, 32],
                     [32, 32],
@@ -327,7 +308,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 200,
-                "cycle_len": 12,
                 "cycle": [
                     [0, 64],
                     [32, 64],
@@ -349,7 +329,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 200,
-                "cycle_len": 12,
                 "cycle": [
                     [0, 96],
                     [32, 96],
@@ -371,7 +350,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 3,
                 "cycle_time_in_ms": 200,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 128],
                     [32, 128],
@@ -385,7 +363,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 3,
                 "cycle_time_in_ms": 200,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 160],
                     [32, 160],
@@ -399,7 +376,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 3,
                 "cycle_time_in_ms": 200,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 192],
                     [32, 192],
@@ -413,7 +389,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 3,
                 "cycle_time_in_ms": 200,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 224],
                     [32, 224],
@@ -427,7 +402,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 1,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 256],
                     [32, 256],
@@ -441,7 +415,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 1,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 288],
                     [32, 288],
@@ -455,7 +428,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 1,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 320],
                     [32, 320],
@@ -469,7 +441,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 1,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 352],
                     [32, 352],
@@ -483,7 +454,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 2,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 384],
                     [32, 384],
@@ -497,7 +467,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 2,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 416],
                     [32, 416],
@@ -511,7 +480,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 2,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 448],
                     [32, 448],
@@ -525,7 +493,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 2,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 480],
                     [32, 480],
@@ -539,7 +506,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 512],
                     [32, 512],
@@ -553,7 +519,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 544],
                     [32, 544],
@@ -567,7 +532,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 576],
                     [32, 576],
@@ -581,7 +545,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 608],
                     [32, 608],
@@ -595,7 +558,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 4,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 9,
                 "cycle": [
                     [0, 640],
                     [32, 640],
@@ -613,7 +575,6 @@
     {
         "path": "assets/img/mc_zombie.png",
         "path_shadow": "assets/img/mc_zombie_shadow.png",
-        "segment_len": 2,
         "segments": [
             {
                 "id": "zombie_idle",
@@ -621,7 +582,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 200,
-                "cycle_len": 19,
                 "cycle": [
                     [0, 0],
                     [32, 0],
@@ -650,7 +610,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 7,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 11,
                 "cycle": [
                     [0, 32],
                     [32, 32],
@@ -670,7 +629,6 @@
     {
         "path": "assets/img/mc_slime_blue.png",
         "path_shadow": "assets/img/mc_slime_blue_shadow.png",
-        "segment_len": 13,
         "segments": [
             {
                 "id": "slime_blue_idle_down_right",
@@ -678,7 +636,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 8,
                 "cycle": [
                     [0, 0],
                     [32, 0],
@@ -696,7 +653,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 8,
                 "cycle": [
                     [0, 32],
                     [32, 32],
@@ -714,7 +670,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 8,
                 "cycle": [
                     [0, 64],
                     [32, 64],
@@ -732,7 +687,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 8,
                 "cycle": [
                     [0, 96],
                     [32, 96],
@@ -750,7 +704,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 128],
                     [32, 128],
@@ -764,7 +717,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 160],
                     [32, 160],
@@ -778,7 +730,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 192],
                     [32, 192],
@@ -792,7 +743,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 224],
                     [32, 224],
@@ -806,7 +756,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 256],
                     [32, 256],
@@ -820,7 +769,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 288],
                     [32, 288],
@@ -834,7 +782,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 320],
                     [32, 320],
@@ -848,7 +795,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 352],
                     [32, 352],
@@ -862,7 +808,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 7,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 9,
                 "cycle": [
                     [0, 384],
                     [32, 384],
@@ -880,7 +825,6 @@
     {
         "path": "assets/img/mc_slime_green.png",
         "path_shadow": "assets/img/mc_slime_green_shadow.png",
-        "segment_len": 13,
         "segments": [
             {
                 "id": "slime_green_idle_down_right",
@@ -888,7 +832,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 8,
                 "cycle": [
                     [0, 0],
                     [32, 0],
@@ -906,7 +849,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 8,
                 "cycle": [
                     [0, 32],
                     [32, 32],
@@ -924,7 +866,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 8,
                 "cycle": [
                     [0, 64],
                     [32, 64],
@@ -942,7 +883,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 8,
                 "cycle": [
                     [0, 96],
                     [32, 96],
@@ -960,7 +900,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 128],
                     [32, 128],
@@ -974,7 +913,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 160],
                     [32, 160],
@@ -988,7 +926,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 192],
                     [32, 192],
@@ -997,12 +934,11 @@
                 ]
             },
             {
-                "id": "slime_gren_walk_up_left",
+                "id": "slime_green_walk_up_left",
                 "size": [32, 32],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 300,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 224],
                     [32, 224],
@@ -1016,7 +952,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 256],
                     [32, 256],
@@ -1030,7 +965,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 288],
                     [32, 288],
@@ -1044,7 +978,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 320],
                     [32, 320],
@@ -1058,7 +991,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 4,
                 "cycle": [
                     [0, 352],
                     [32, 352],
@@ -1072,7 +1004,6 @@
                 "shadow_offset": [0, 0],
                 "still_frame": 7,
                 "cycle_time_in_ms": 100,
-                "cycle_len": 9,
                 "cycle": [
                     [0, 384],
                     [32, 384],
