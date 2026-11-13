@@ -1,0 +1,63 @@
+#include "grim_fetcher.h"
+
+static void		more_window_settings(t_man *man);
+static void		set_initial_viewport(t_man *man);
+
+int	create_window(t_man *man, const char *title, t_ivec2 size,
+	float aspect_ratio)
+{
+	if (!glfwInit())
+		return (put_error(E_FAIL_GLFW, 0, 0));
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	if (!set_resolution(man, size, aspect_ratio))
+		return (put_error(E_FAIL_WINDOW, 0, 0));
+	man->title = (char *)title;
+	man->window = glfwCreateWindow(man->res.window_size.x,
+		man->res.window_size.y, man->title, 0, 0);
+	if (!man->window)
+		return (put_error(E_FAIL_WINDOW_GL, 0, 0));
+	more_window_settings(man);
+	man->gl_loaded = init_gl_functions();
+	if (!man->gl_loaded)
+		return (put_error(E_FAIL_GL_FUNC, 0, 0));
+	man->shader_program = create_shader_program();
+	return (!!man->shader_program && !!create_uniform(man) && !!create_mesh());
+}
+
+void	set_vsync(t_man *man)
+{
+	glfwSwapInterval(man->vsync);
+	return ;
+}
+
+static void	more_window_settings(t_man *man)
+{
+	t_ivec2	min;
+	t_ivec2	max;
+
+	set_ivec2(&min, man->res.window_size.x, man->res.window_size.y);
+	set_ivec2(&max, man->res.monitor_size.x, man->res.monitor_size.y);
+	glfwSetWindowSizeLimits(man->window, min.x, min.y, max.x, max.y);
+	glfwSetWindowPos(man->window,
+		man->res.monitor_size.x / 2 - man->res.window_size.x / 2,
+		man->res.monitor_size.y / 2 - man->res.window_size.y / 2);
+	glfwMakeContextCurrent(man->window);
+	set_vsync(man);
+	set_initial_viewport(man);
+	glfwSetFramebufferSizeCallback(man->window, framebuffer_size_callback);
+	return ;
+}
+
+static void	set_initial_viewport(t_man *man)
+{
+	t_ivec2	size;
+
+	glfwGetFramebufferSize(man->window, &size.x, &size.y);
+	set_viewport(man, size);
+	glViewport(man->res.viewport_offset.x, man->res.viewport_offset.y,
+		man->res.viewport_size.x, man->res.viewport_size.y);
+	return ;
+}

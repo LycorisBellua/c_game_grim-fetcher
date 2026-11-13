@@ -58,7 +58,5 @@ fclean-win32: clean-win32
 	rm -rf $(DIR_BUILD)/win32/$(BIN_NAME_WIN)
 
 re: fclean-linux all
-
 re-win64: fclean-win64 win64
-
 re-win32: fclean-win32 win32

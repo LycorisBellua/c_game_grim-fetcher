@@ -1,27 +1,10 @@
 [
     {
-        "path": "assets/img/mg_cursor.png",
-        "path_shadow": "",
-        "segments": [
-            {
-                "id": "cursor",
-                "size": [6, 6],
-                "shadow_offset": [0, 0],
-                "still_frame": 0,
-                "cycle_time_in_ms": 150,
-                "cycle": [
-                    [0, 0],
-                    [7, 0]
-                ]
-            }
-        ]
-    },
-    {
         "path": "assets/img/monogram.png",
         "path_shadow": "",
         "segments": [
             {
-                "id": "font_default",
+                "id": "font",
                 "size": [7, 12],
                 "shadow_offset": [0, 0],
                 "still_frame": 0,
@@ -123,6 +106,23 @@
                     [91, 60],
                     [98, 60],
                     [105, 60]
+                ]
+            }
+        ]
+    },
+    {
+        "path": "assets/img/mg_cursor.png",
+        "path_shadow": "",
+        "segments": [
+            {
+                "id": "cursor",
+                "size": [6, 6],
+                "shadow_offset": [0, 0],
+                "still_frame": 0,
+                "cycle_time_in_ms": 150,
+                "cycle": [
+                    [0, 0],
+                    [7, 0]
                 ]
             }
         ]

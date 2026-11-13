@@ -21,13 +21,30 @@ I've made, and I can appreciate my progress from then to
 
 ## Features
 
-- X window button, Alt+F4 or ESC to close the game.
-- F11 to toggle fullscreen mode.
-- Scroll to zoom in and out.
-- WASD, arrow keys or mouse left click to move.
-- The clicked path is calculated with the A\* pathfinding algorithm.
+- The clicked path is calculated with the A\* pathfinding algorithm. It avoids 
+obstacles and the red cells next to enemies, but the path isn't updated as 
+enemies move.
 - No attack button, dodge because you die on contact.
 - Enemies wait for the player's first step to move.
+
+## Controls
+
+| Action                            | Control                                                           |
+| --------------------------------- | ----------------------------------------------------------------- |
+| Move up                           | `W`, `↑` (Up Arrow) or `Page Up`                                  |
+| Move down                         | `S`, `↓` (Down Arrow) or `Page Down`                              |
+| Move left                         | `A` or `←` (Left Arrow)                                           |
+| Move right                        | `D` or `→` (Right Arrow)                                          |
+| Keypad                            | With `Num Lock` off, `8` `2` `4` `6` act as the arrow keys        |
+| Walk to a cell                    | Left click on it                                                  |
+| Stop walking                      | Left click on the dog, an obstacle, a red cell or outside the map |
+| Zoom in/out                       | Mouse scroll wheel                                                |
+| Next map / retry                  | `Enter` on the end screen                                         |
+| Quit                              | Click the window close (`X`) button, `Alt` + `F4`, or `Esc`       |
+| Restart from the first map        | `F5`                                                              |
+| Toggle VSync (on by default)      | `F10`                                                             |
+| Toggle fullscreen                 | `F11`                                                             |
+| Toggle VSync status + FPS counter | `F12`                                                             |
 
 ## Lore
 

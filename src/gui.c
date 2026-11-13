@@ -1,76 +1,46 @@
 #include "grim_fetcher.h"
 
-static void render_steps(t_frame *frame);
-static void render_souls(t_frame *frame);
+static void	render_steps(t_man *man);
+static void	render_collecs(t_man *man);
 
-void render_gui(t_frame *frame)
+void	render_gui(t_man *man)
 {
-	render_steps(frame);
-	render_souls(frame);
-	if (man.cursor.x >= 0 && man.cursor.y >= 0)
-		draw_cursor(frame, man.img_cursor, man.cursor, man.click);
-	return;
+	render_steps(man);
+	render_collecs(man);
+	if (man->show_debug)
+		display_fps(man);
+	if (man->cursor.x >= 0 && man->cursor.y >= 0)
+		draw_cursor(man, man->img_cursor, man->cursor, man->click);
+	return ;
 }
 
-/*
-static void render_health(t_frame *frame)
+static void	render_steps(t_man *man)
 {
-	t_ivec2 pos;
-	char    *text;
+	t_ivec2	pos;
+	char	*text;
 
-	set_ivec2(&pos, 8, 0);
-	draw_font_default(frame, &pos, " Health: ");
-	text = itoa_dec(man.player.health);
-	draw_font_default(frame, &pos, text);
+	set_ivec2(&pos, man->res.res.x / 2 - 20 * man->gui_scale, 0);
+	draw_font(man, &pos, "Steps: ");
+	text = itoa_dec(man->player.steps);
+	draw_font(man, &pos, text);
 	free(text);
-	draw_font_default(frame, &pos, "%");
-	return;
+	return ;
 }
 
-static void render_stamina(t_frame *frame)
+static void	render_collecs(t_man *man)
 {
-	t_ivec2 pos;
-	char    *text;
+	t_ivec2	pos;
+	char	*text;
 
-	set_ivec2(&pos, 0, 24);
-	draw_font_default(frame, &pos, "Stamina: ");
-	text = itoa_dec(man.player.stamina);
-	set_ivec2(&pos, 70, 24);
-	draw_font_default(frame, &pos, text);
+	set_ivec2(&pos, man->res.res.x - 80 * man->gui_scale, -4 * man->gui_scale);
+	draw_image(man, man->img_collec, pos);
+	set_ivec2(&pos, man->res.res.x - 46 * man->gui_scale, 0);
+	text = itoa_dec(man->player.collected);
+	draw_font(man, &pos, text);
 	free(text);
-	pos.y = 24;
-	draw_font_default(frame, &pos, "%");
-	return;
-}
-*/
-
-static void render_steps(t_frame *frame)
-{
-	t_ivec2 pos;
-	char    *text;
-
-	set_ivec2(&pos, 300, 0);
-	draw_font_default(frame, &pos, "Steps: ");
-	text = itoa_dec(man.player.steps);
-	draw_font_default(frame, &pos, text);
+	draw_font(man, &pos, "/");
+	text = itoa_dec(man->player.to_collect);
+	draw_font(man, &pos, text);
 	free(text);
-	return;
-}
-
-static void render_souls(t_frame *frame)
-{
-	t_ivec2 pos;
-	char    *text;
-
-	set_ivec2(&pos, 560, -4);
-	draw_sprite(frame, man.img_soul_gui, pos);
-	set_ivec2(&pos, 594, 0);
-	text = itoa_dec(man.player.collected);
-	draw_font_default(frame, &pos, text);
-	free(text);
-	draw_font_default(frame, &pos, "/");
-	text = itoa_dec(man.player.to_collect);
-	draw_font_default(frame, &pos, text);
-	free(text);
-	return;
+	return ;
 }

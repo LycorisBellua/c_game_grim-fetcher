@@ -1,43 +1,44 @@
 #include "grim_fetcher.h"
 
-static void   reset_astar_data(t_map *map, t_cell *start, t_cell *end);
-static double heuristic(t_map *map, t_cell *a, t_cell *b);
-static void   neighbors(t_map *map, t_list **list, t_cell *curr, t_cell *end);
-static int    cmp_global_goal(void *a, void *b);
+static void		reset_astar_data(t_map *map, t_cell *start, t_cell *end);
+static float	heuristic(t_cell *a, t_cell *b);
+static void		neighbors(t_man *man, t_cell *end, int avoid_red,
+					t_list **list, t_cell *curr);
+static int		cmp_global_goal(void *a, void *b);
 
-/* AStar Pathfinding Algorithm */
-t_list *get_path(t_cell *start, t_cell *end)
+/* AStar pathfinding algorithm. */
+t_list	*get_path(t_man *man, t_cell *start, t_cell *end, int avoid_red)
 {
-	t_cell *curr;
-	t_list *list;
+	t_cell	*curr;
+	t_list	*list;
 
-	reset_astar_data(&man.map, start, end);
+	reset_astar_data(&man->map, start, end);
 	curr = start;
 	list = list_new(start);
 	while (list && curr != end)
 	{
 		while (list && ((t_cell *)(list->data))->is_visited)
-			list_pop(&list, 0);
+			list_del_one(&list, 0);
 		if (!list)
-			break;
+			break ;
 		curr = list->data;
 		curr->is_visited = 1;
-		neighbors(&man.map, &list, curr, end);
+		neighbors(man, end, avoid_red, &list, curr);
 	}
 	list_clear(&list, 0);
 	if (!end->parent)
-		return 0;
+		return (0);
 	while (end != start)
 	{
 		list_add_front(&list, list_new(end));
 		end = end->parent;
 	}
-	return list;
+	return (list);
 }
 
-static void reset_astar_data(t_map *map, t_cell *start, t_cell *end)
+static void	reset_astar_data(t_map *map, t_cell *start, t_cell *end)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (map->cells[i].symbol)
@@ -49,68 +50,55 @@ static void reset_astar_data(t_map *map, t_cell *start, t_cell *end)
 		++i;
 	}
 	start->local_goal = 0;
-	start->global_goal = heuristic(map, start, end);
-	return;
+	start->global_goal = heuristic(start, end);
+	return ;
 }
 
-static double heuristic(t_map *map, t_cell *a, t_cell *b)
+static float	heuristic(t_cell *a, t_cell *b)
 {
-	double  base_heuristic;
-	double  penalty;
-	t_ivec2 step;
-	int     x;
-	int     y;
+	t_vec2	pos_a;
+	t_vec2	pos_b;
 
-	base_heuristic = f_dist_manhattan(a->pos.x, a->pos.y, b->pos.x, b->pos.y);
-	penalty = 0;
-	set_ivec2(&step, f_clamp(b->pos.x - a->pos.x, -1, 1),
-			f_clamp(b->pos.y - a->pos.y, -1, 1));
-	x = a->pos.x;
-	y = a->pos.y;
-	while (x != b->pos.x || y != b->pos.y)
-	{
-		if (x != b->pos.x)
-			x += step.x;
-		if (y != b->pos.y)
-			y += step.y;
-		if (map->cells[y * map->size.x + x].is_obstacle)
-			penalty += 1;
-	}
-	return base_heuristic + penalty;
+	set_vec2(&pos_a, a->pos.x, a->pos.y);
+	set_vec2(&pos_b, b->pos.x, b->pos.y);
+	return (dist_manhattan(pos_a, pos_b));
 }
 
-static void neighbors(t_map *map, t_list **list, t_cell *curr, t_cell *end)
+static void	neighbors(t_man *man, t_cell *end, int avoid_red, t_list **list,
+	t_cell *curr)
 {
-	int    i;
-	t_cell *n;
-	double goal;
+	int		i;
+	t_cell	*n;
+	float	goal;
 
 	i = 0;
 	while (i < 4)
 	{
-		n = curr->neighbors[i];
-		if (n && (!n->is_obstacle || n == end) && !n->is_visited)
+		n = curr->neighbors[i++];
+		if (!n || n->is_visited)
+			continue ;
+		if (n != end && (n->is_obstacle
+			|| (avoid_red && is_cell_an_enemy_neighbor(man, n->pos))))
+			continue ;
+		goal = curr->local_goal + 1;
+		if (goal < n->local_goal || n->local_goal < 0)
 		{
-			goal = curr->local_goal + heuristic(map, curr, n);
-			if (goal < n->local_goal || n->local_goal < 0)
-			{
-				n->parent = curr;
-				n->local_goal = goal;
-				n->global_goal = n->local_goal + heuristic(map, n, end);
-				list_add_sorted(list, list_new(n), cmp_global_goal);
-			}
+			n->parent = curr;
+			n->local_goal = goal;
+			n->global_goal = n->local_goal + heuristic(n, end);
+			list_add_sorted(list, list_new(n), cmp_global_goal);
 		}
-		++i;
 	}
-	return;
+	return ;
 }
 
-static int cmp_global_goal(void *a, void *b)
+static int	cmp_global_goal(void *a, void *b)
 {
-	t_cell *cell_a;
-	t_cell *cell_b;
+	t_cell	*cell_a;
+	t_cell	*cell_b;
 
 	cell_a = (t_cell *)a;
 	cell_b = (t_cell *)b;
-	return cell_a->global_goal - cell_b->global_goal;
+	return ((cell_a->global_goal > cell_b->global_goal)
+		- (cell_a->global_goal < cell_b->global_goal));
 }

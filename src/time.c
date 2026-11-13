@@ -1,0 +1,79 @@
+#include "grim_fetcher.h"
+
+static float	compute_dt(struct timeval prev_time, struct timeval curr_time);
+static long		to_ms(struct timeval time);
+
+void	set_dt_and_fps(t_man *man)
+{
+	static struct timeval	prev_time;
+	struct timeval			curr_time;
+
+	gettimeofday(&curr_time, 0);
+	if (man->reset_dt)
+	{
+		prev_time = curr_time;
+		man->reset_dt = 0;
+	}
+	if (!prev_time.tv_sec && !prev_time.tv_usec)
+		prev_time = curr_time;
+	man->dt = compute_dt(prev_time, curr_time);
+	man->dt_ms = to_ms(curr_time) - to_ms(prev_time);
+	man->fps = !man->dt ? 0 : (int)(1 / man->dt);
+	prev_time = curr_time;
+	return ;
+}
+
+void	display_fps(t_man *man)
+{
+	static long	dt_ms;
+	static int	smoothed_fps;
+	char		*s;
+	char		*num;
+	t_ivec2		pos;
+
+	dt_ms += man->dt_ms;
+	if (dt_ms >= 250)
+	{
+		smoothed_fps = man->fps;
+		dt_ms -= 250;
+	}
+	num = itoa_dec(smoothed_fps);
+	s = strjoin("VSync: ", man->vsync ? "On" : "Off");
+	set_ivec2(&pos, 20 * man->gui_scale, 40 * man->gui_scale);
+	draw_font(man, &pos, s);
+	free(s);
+	s = strjoin("FPS: ", num);
+	set_ivec2(&pos, 20 * man->gui_scale, 56 * man->gui_scale);
+	draw_font(man, &pos, s);
+	free(s);
+	free(num);
+	return ;
+}
+
+long	get_time(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, 0);
+	return (to_ms(time));
+}
+
+static float	compute_dt(struct timeval prev_time, struct timeval curr_time)
+{
+	float	delta_s;
+	float	delta_ms;
+
+	delta_s = (float)(curr_time.tv_sec - prev_time.tv_sec);
+	delta_ms = (float)(curr_time.tv_usec - prev_time.tv_usec) / 1000000.0f;
+	if (delta_ms < 0)
+	{
+		delta_s -= 1.0f;
+		delta_ms += 1.0f;
+	}
+	return (delta_s + delta_ms);
+}
+
+static long	to_ms(struct timeval time)
+{
+	return (time.tv_sec * 1000L + time.tv_usec / 1000);
+}
