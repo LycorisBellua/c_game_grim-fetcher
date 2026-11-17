@@ -1,43 +1,43 @@
 #include "grim_fetcher.h"
 
-static void   reset_astar_data(t_map *map, t_cell *start, t_cell *end);
-static double heuristic(t_map *map, t_cell *a, t_cell *b);
-static void   neighbors(t_map *map, t_list **list, t_cell *curr, t_cell *end);
-static int    cmp_global_goal(void *a, void *b);
+static t_list	*init_astar(t_map *map, t_cell *start, t_cell *end);
+static float	heuristic(t_cell *a, t_cell *b);
+static void		neighbors(t_man *man, t_astar *a, t_list **list, t_cell *curr);
+static int		cmp_global_goal(void *a, void *b);
 
-/* AStar Pathfinding Algorithm */
-t_list *get_path(t_cell *start, t_cell *end)
+/* AStar pathfinding algorithm. */
+t_list	*get_path(t_man *man, t_cell *start, t_cell *end, int avoid_red)
 {
-	t_cell *curr;
-	t_list *list;
+	t_cell	*curr;
+	t_list	*list;
+	t_astar	a;
 
-	reset_astar_data(&man.map, start, end);
+	a = (t_astar){end, avoid_red};
+	list = init_astar(&man->map, start, end);
 	curr = start;
-	list = list_new(start);
 	while (list && curr != end)
 	{
-		while (list && ((t_cell *)(list->data))->is_visited)
-			list_pop(&list, 0);
-		if (!list)
-			break;
 		curr = list->data;
+		list_del_one(&list, 0);
+		if (curr->is_visited)
+			continue ;
 		curr->is_visited = 1;
-		neighbors(&man.map, &list, curr, end);
+		neighbors(man, &a, &list, curr);
 	}
 	list_clear(&list, 0);
 	if (!end->parent)
-		return 0;
+		return (0);
 	while (end != start)
 	{
 		list_add_front(&list, list_new(end));
 		end = end->parent;
 	}
-	return list;
+	return (list);
 }
 
-static void reset_astar_data(t_map *map, t_cell *start, t_cell *end)
+static t_list	*init_astar(t_map *map, t_cell *start, t_cell *end)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (map->cells[i].symbol)
@@ -46,71 +46,62 @@ static void reset_astar_data(t_map *map, t_cell *start, t_cell *end)
 		map->cells[i].local_goal = -1;
 		map->cells[i].global_goal = -1;
 		map->cells[i].parent = 0;
+		map->cells[i].risk = 0;
 		++i;
 	}
 	start->local_goal = 0;
-	start->global_goal = heuristic(map, start, end);
-	return;
+	start->global_goal = heuristic(start, end);
+	return (list_new(start));
 }
 
-static double heuristic(t_map *map, t_cell *a, t_cell *b)
+static float	heuristic(t_cell *a, t_cell *b)
 {
-	double  base_heuristic;
-	double  penalty;
-	t_ivec2 step;
-	int     x;
-	int     y;
+	t_vec2	pos_a;
+	t_vec2	pos_b;
 
-	base_heuristic = f_dist_manhattan(a->pos.x, a->pos.y, b->pos.x, b->pos.y);
-	penalty = 0;
-	set_ivec2(&step, f_clamp(b->pos.x - a->pos.x, -1, 1),
-			f_clamp(b->pos.y - a->pos.y, -1, 1));
-	x = a->pos.x;
-	y = a->pos.y;
-	while (x != b->pos.x || y != b->pos.y)
-	{
-		if (x != b->pos.x)
-			x += step.x;
-		if (y != b->pos.y)
-			y += step.y;
-		if (map->cells[y * map->size.x + x].is_obstacle)
-			penalty += 1;
-	}
-	return base_heuristic + penalty;
+	set_vec2(&pos_a, a->pos.x, a->pos.y);
+	set_vec2(&pos_b, b->pos.x, b->pos.y);
+	return (dist_manhattan(pos_a, pos_b));
 }
 
-static void neighbors(t_map *map, t_list **list, t_cell *curr, t_cell *end)
+static void	neighbors(t_man *man, t_astar *a, t_list **list, t_cell *curr)
 {
-	int    i;
-	t_cell *n;
-	double goal;
+	int		i;
+	t_cell	*n;
+	float	goal;
+	int		risk;
 
 	i = 0;
 	while (i < 4)
 	{
-		n = curr->neighbors[i];
-		if (n && (!n->is_obstacle || n == end) && !n->is_visited)
+		n = curr->neighbors[i++];
+		if (!n || n->is_visited || (n != a->end && (n->is_obstacle
+			|| (a->avoid_red && is_cell_an_enemy_neighbor(man, n->pos)))))
+			continue ;
+		goal = curr->local_goal + 1;
+		risk = curr->risk + is_cell_within_enemy_reach(man, n);
+		if (n->local_goal < 0 || goal < n->local_goal
+			|| (goal == n->local_goal && risk < n->risk))
 		{
-			goal = curr->local_goal + heuristic(map, curr, n);
-			if (goal < n->local_goal || n->local_goal < 0)
-			{
-				n->parent = curr;
-				n->local_goal = goal;
-				n->global_goal = n->local_goal + heuristic(map, n, end);
-				list_add_sorted(list, list_new(n), cmp_global_goal);
-			}
+			n->parent = curr;
+			n->local_goal = goal;
+			n->risk = risk;
+			n->global_goal = n->local_goal + heuristic(n, a->end);
+			list_add_sorted(list, list_new(n), cmp_global_goal);
 		}
-		++i;
 	}
-	return;
+	return ;
 }
 
-static int cmp_global_goal(void *a, void *b)
+static int	cmp_global_goal(void *a, void *b)
 {
-	t_cell *cell_a;
-	t_cell *cell_b;
+	t_cell	*cell_a;
+	t_cell	*cell_b;
 
 	cell_a = (t_cell *)a;
 	cell_b = (t_cell *)b;
-	return cell_a->global_goal - cell_b->global_goal;
+	if (cell_a->global_goal != cell_b->global_goal)
+		return ((cell_a->global_goal > cell_b->global_goal)
+			- (cell_a->global_goal < cell_b->global_goal));
+	return ((cell_a->risk > cell_b->risk) - (cell_a->risk < cell_b->risk));
 }

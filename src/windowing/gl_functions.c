@@ -1,45 +1,47 @@
 #include "gl_functions.h"
 
-static int init_gl_functions_for_shaders(void);
-static int init_gl_functions_for_buffers(void);
-static int init_gl_functions_for_programs(void);
-static int init_gl_functions_for_vertices(void);
+static int	init_gl_functions_for_shaders(void);
+static int	init_gl_functions_for_buffers(void);
+static int	init_gl_functions_for_programs(void);
+static int	init_gl_functions_for_vertices(void);
 
-GL_AS   glAttachShader;
-GL_BB   glBindBuffer;
-GL_BVA  glBindVertexArray;
-GL_BD   glBufferData;
-GL_COS  glCompileShader;
-GL_CP   glCreateProgram;
-GL_CS   glCreateShader;
-GL_DB   glDeleteBuffers;
-GL_DP   glDeleteProgram;
-GL_DS   glDeleteShader;
-GL_DVA  glDeleteVertexArrays;
-GL_EVAA glEnableVertexAttribArray;
-GL_GB   glGenBuffers;
-GL_GVA  glGenVertexArrays;
-GL_GPI  glGetProgramiv;
-GL_GPIL glGetProgramInfoLog;
-GL_GSI  glGetShaderiv;
-GL_GSIL glGetShaderInfoLog;
-GL_GUL  glGetUniformLocation;
-GL_GVAI glGetVertexAttribIuiv;
-GL_LP   glLinkProgram;
-GL_SS   glShaderSource;
-GL_U1I  glUniform1i;
-GL_UP   glUseProgram;
-GL_VAP  glVertexAttribPointer;
+GL_AS	glAttachShader;
+GL_BB	glBindBuffer;
+GL_BVA	glBindVertexArray;
+GL_BD	glBufferData;
+GL_COS	glCompileShader;
+GL_CP	glCreateProgram;
+GL_CS	glCreateShader;
+GL_DB	glDeleteBuffers;
+GL_DP	glDeleteProgram;
+GL_DS	glDeleteShader;
+GL_DVA	glDeleteVertexArrays;
+GL_EVAA	glEnableVertexAttribArray;
+GL_GB	glGenBuffers;
+GL_GVA	glGenVertexArrays;
+GL_GPI	glGetProgramiv;
+GL_GPIL	glGetProgramInfoLog;
+GL_GSI	glGetShaderiv;
+GL_GSIL	glGetShaderInfoLog;
+GL_GUL	glGetUniformLocation;
+GL_GVAI	glGetVertexAttribIuiv;
+GL_LP	glLinkProgram;
+GL_MB	glMapBuffer;
+GL_SS	glShaderSource;
+GL_U1I	glUniform1i;
+GL_UMB	glUnmapBuffer;
+GL_UP	glUseProgram;
+GL_VAP	glVertexAttribPointer;
 
-int init_gl_functions(void)
+int	init_gl_functions(void)
 {
-	return init_gl_functions_for_shaders() 
-		&& init_gl_functions_for_buffers() 
-		&& init_gl_functions_for_programs() 
-		&& init_gl_functions_for_vertices();
+	return (init_gl_functions_for_shaders()
+		&& init_gl_functions_for_buffers()
+		&& init_gl_functions_for_programs()
+		&& init_gl_functions_for_vertices());
 }
 
-static int init_gl_functions_for_shaders(void)
+static int	init_gl_functions_for_shaders(void)
 {
 	glAttachShader = (GL_AS)glfwGetProcAddress("glAttachShader");
 	glCompileShader = (GL_COS)glfwGetProcAddress("glCompileShader");
@@ -48,21 +50,24 @@ static int init_gl_functions_for_shaders(void)
 	glShaderSource = (GL_SS)glfwGetProcAddress("glShaderSource");
 	glGetShaderiv = (GL_GSI)glfwGetProcAddress("glGetShaderiv");
 	glGetShaderInfoLog = (GL_GSIL)glfwGetProcAddress("glGetShaderInfoLog");
-	return glAttachShader && glCompileShader && glCreateShader
+	return (glAttachShader && glCompileShader && glCreateShader
 		&& glDeleteShader && glShaderSource && glGetShaderiv
-		&& glGetShaderInfoLog;
+		&& glGetShaderInfoLog);
 }
 
-static int init_gl_functions_for_buffers(void)
+static int	init_gl_functions_for_buffers(void)
 {
 	glBindBuffer = (GL_BB)glfwGetProcAddress("glBindBuffer");
 	glBufferData = (GL_BD)glfwGetProcAddress("glBufferData");
 	glDeleteBuffers = (GL_DB)glfwGetProcAddress("glDeleteBuffers");
 	glGenBuffers = (GL_GB)glfwGetProcAddress("glGenBuffers");
-	return glBindBuffer && glBufferData && glDeleteBuffers && glGenBuffers;
+	glMapBuffer = (GL_MB)glfwGetProcAddress("glMapBuffer");
+	glUnmapBuffer = (GL_UMB)glfwGetProcAddress("glUnmapBuffer");
+	return (glBindBuffer && glBufferData && glDeleteBuffers && glGenBuffers
+		&& glMapBuffer && glUnmapBuffer);
 }
 
-static int init_gl_functions_for_programs(void)
+static int	init_gl_functions_for_programs(void)
 {
 	glCreateProgram = (GL_CP)glfwGetProcAddress("glCreateProgram");
 	glDeleteProgram = (GL_DP)glfwGetProcAddress("glDeleteProgram");
@@ -70,24 +75,24 @@ static int init_gl_functions_for_programs(void)
 	glUseProgram = (GL_UP)glfwGetProcAddress("glUseProgram");
 	glGetProgramiv = (GL_GPI)glfwGetProcAddress("glGetProgramiv");
 	glGetProgramInfoLog = (GL_GPIL)glfwGetProcAddress("glGetProgramInfoLog");
-	return glCreateProgram && glDeleteProgram && glLinkProgram && glUseProgram
-		&& glGetProgramiv && glGetProgramInfoLog;
+	return (glCreateProgram && glDeleteProgram && glLinkProgram
+		&& glUseProgram && glGetProgramiv && glGetProgramInfoLog);
 }
 
-static int init_gl_functions_for_vertices(void)
+static int	init_gl_functions_for_vertices(void)
 {
 	glBindVertexArray = (GL_BVA)glfwGetProcAddress("glBindVertexArray");
 	glDeleteVertexArrays = (GL_DVA)glfwGetProcAddress("glDeleteVertexArrays");
-	glEnableVertexAttribArray = 
+	glEnableVertexAttribArray = \
 		(GL_EVAA)glfwGetProcAddress("glEnableVertexAttribArray");
 	glGenVertexArrays = (GL_GVA)glfwGetProcAddress("glGenVertexArrays");
-	glGetVertexAttribIuiv = 
+	glGetVertexAttribIuiv = \
 		(GL_GVAI)glfwGetProcAddress("glGetVertexAttribIuiv");
 	glVertexAttribPointer = (GL_VAP)glfwGetProcAddress("glVertexAttribPointer");
 	glGetUniformLocation = (GL_GUL)glfwGetProcAddress("glGetUniformLocation");
 	glUniform1i = (GL_U1I)glfwGetProcAddress("glUniform1i");
-	return glBindVertexArray && glDeleteVertexArrays 
-		&& glEnableVertexAttribArray && glGenVertexArrays 
-		&& glGetVertexAttribIuiv && glVertexAttribPointer 
-		&& glGetUniformLocation && glUniform1i;
+	return (glBindVertexArray && glDeleteVertexArrays
+		&& glEnableVertexAttribArray && glGenVertexArrays
+		&& glGetVertexAttribIuiv && glVertexAttribPointer
+		&& glGetUniformLocation && glUniform1i);
 }

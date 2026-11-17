@@ -1,25 +1,17 @@
 #include "grim_fetcher.h"
 
-static GLint loc = 0;
-
-int create_uniform(void)
+int	create_uniform(t_man *man)
 {
-	char *name;
-
-	name = "frame_texture";
-	loc = glGetUniformLocation(man.shader_program, name);
-	if (loc < 0)
-	{
-		fprintf(stderr, "Error: The \"%s\" uniform is either not found or "
-				"unused in shader program ID°%d\n", name, man.shader_program);
-		return 0;
-	}
-	glUniform1i(loc, 0);
-	return 1;
+	man->uniform_loc = glGetUniformLocation(man->shader_program,
+		"frame_texture");
+	if (man->uniform_loc < 0)
+		return (put_error(E_FAIL_UNIFORM_FRAME_TEXTURE, 0, 0));
+	glUniform1i(man->uniform_loc, 0);
+	return (1);
 }
 
-void free_uniform(void)
+void	free_uniform(t_man *man)
 {
-	loc = 0;
-	return;
+	man->uniform_loc = 0;
+	return ;
 }
